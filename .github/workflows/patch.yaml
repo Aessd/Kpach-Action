@@ -28,7 +28,7 @@ jobs:
               wget -O boot.img ${{ env.BOOT_FILE }}
         fi
         if [[ ${{ env.KERNEL_FILE }} =~ http ]]; then
-              wget -O kernel-b ${{ env.KERNEL_FILE }}
+              wget -O kernel.ori ${{ env.KERNEL_FILE }}
         fi
         if [[ ${{ env.KP_IMG }} =~ http ]]; then
               wget -O kpimg-android ${{ env.KP_IMG }}
@@ -45,13 +45,13 @@ jobs:
       run: |
         chmod +x magiskboot
         ./magiskboot unpack boot.img
-        mv kernel kernel-b
+        mv kernel kernel.ori
     
     - name: path kernel
       run: |
         chmod +x kptools-linux
-        ./kptools-linux -p kernel-b --skey ${{ env.SKEY }} --kpimg kpimg-android --out kernel
-        rm -rf kernel-b
+        ./kptools-linux -p kernel.ori --skey ${{ env.SKEY }} --kpimg kpimg-android --out kernel
+        rm -rf kernel.ori
 
     - name: Update kernel
       uses: actions/upload-artifact@v3
